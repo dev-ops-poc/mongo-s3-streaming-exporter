@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: mongo-s3-streaming-exporter
+  data:
+    mongodb:
+      uri: ${PRI_MONGODB_URI:mongodb://localhost:27017}
+      database: ${PRI_MONGODB_DATABASE:agcs_service_pri_dev}
+
+aws:
+  clientid: ${AWS_ACCESS_KEY_ID:A12345E}
+  secret: ${AWS_SECRET_ACCESS_KEY:b5678e}
+  s3:
+    bucketName: ${AWS_S3_BUCKET_NAME:my-s3-bucket}
+    bucketRegion: ${AWS_S3_BUCKET_REGION:eu-central-1}
+    roleArn: ${AWS_S3_ROLE_ARN:arn:aws:iam::44442:role/s3-access-role}
+    roleSessionName: ${AWS_S3_ROLE_SESSION_NAME:mongos3streamer}
+
+export:
+  s3:
+    key: ${EXPORT_S3_KEY:test.json}
+  collection:
+    name: ${EXPORT_COLLECTION_NAME:DemoEntity}
+    filter:
+      json: ${EXPORT_COLLECTION_FILTER_JSON:'{}'} #'{"status": "active", "type": "premium"}'
+  datawrapper:
+    key: ${EXPORT_DATAWRAPPER_KEY:dataList}
+ 
+

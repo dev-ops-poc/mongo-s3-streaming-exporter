@@ -1,0 +1,38 @@
+name: DOX Java Docker Image Build
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch: # allows manual trigger from GitHub UI
+
+jobs:
+  cicd:
+    runs-on: ubuntu-latest
+    env:
+      JDK_VERSION: 17
+      DEBUG_MODE: ${{ vars.DEBUG_MODE }}
+      DOCKER_IMAGE_PUSH_PREFIX: ${{ vars.DOCKER_IMAGE_PUSH_PREFIX }}
+      OCI_REG_USER: ${{ vars.OCI_REG_USER }}
+      OCI_REG_PASSWORD: ${{ secrets.OCI_REG_PASSWORD }}    
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      # Step 1: Download and run the installation script
+      - name: Install DOX CLI
+        run: |
+          curl -s -L -o install.sh https://github.com/dopxlab/dox-cli/releases/latest/download/install.sh && bash install.sh
+          cp $HOME/.dox/bin/* /usr/local/bin/
+
+      # Step 2: DOX Action - Maven Build
+      - name: Maven Build
+        run: |
+          dox configure maven
+          mvn clean install
+
+      # Step 3: DOX Action - Docker Build & Push
+      - name: Docker Build & Push
+        run: |
+          dox docker build push
