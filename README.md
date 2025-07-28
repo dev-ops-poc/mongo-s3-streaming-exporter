@@ -40,7 +40,7 @@ A Spring Boot service that efficiently streams MongoDB collections to AWS S3 wit
   - [Filtered Export with Compression](#filtered-export-with-compression)
   - [Scheduled Export](#scheduled-export)
 - [API Reference](#api-reference)
-
+- [Kubernetes Deployment Resources] (#kubernetes-deployment-resources)
 ---
 
 ## Features
@@ -538,6 +538,44 @@ long count2 = exportService.exportCollectionToS3Streaming(
     true
 );
 ```
+
+[↑ Back to Top](#table-of-contents)
+
+Here's how you can seamlessly integrate the recommended Kubernetes resource configuration into your documentation.
+
+Add the following new section under `## Configuration` just after the `### Configuration Parameters` subsection:
+
+---
+
+## Kubernetes Deployment Resources
+
+To ensure stable and efficient operation, especially under high data volumes, it's important to configure Kubernetes resource requests and limits appropriately.
+
+### Recommended Configuration (Default Use Case)
+
+```yaml
+resources:
+  requests:
+    memory: "1Gi"
+    cpu: "1000m"
+  limits:
+    memory: "2Gi"
+    cpu: "2000m"
+```
+
+### For Large Datasets (>10GB)
+
+```yaml
+resources:
+  requests:
+    memory: "2Gi"
+    cpu: "1500m"
+  limits:
+    memory: "4Gi"
+    cpu: "3000m"
+```
+
+> 💡 *Tip:* These settings help avoid out-of-memory errors during large exports and ensure enough CPU is allocated for compression and streaming workloads.
 
 [↑ Back to Top](#table-of-contents)
 

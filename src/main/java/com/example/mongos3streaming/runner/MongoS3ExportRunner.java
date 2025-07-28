@@ -22,7 +22,7 @@ public class MongoS3ExportRunner implements CommandLineRunner {
 	@Value("${export.collection.name}")
 	private String collectionName;
 
-	@Value("${export.filter.json:}")
+	@Value("${export.collection.filter.json:}")
 	private String filterJson;
 
 	@Value("${export.s3.key:}")
